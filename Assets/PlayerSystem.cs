@@ -18,7 +18,6 @@ public partial struct PlayerSystem : ISystem
     {
     }
 
-    [BurstCompile]
     void OnUpdate(ref SystemState state)
     {
         var moveJob = new MoveJob
