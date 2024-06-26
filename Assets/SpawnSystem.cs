@@ -8,7 +8,6 @@ using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 
-
 public delegate void OnMove(float pow, bool hor);
 public delegate void OnAction();
 public partial class SpawnSystem : SystemBase
