@@ -16,11 +16,10 @@ public partial class SpawnSystem : SystemBase
     public event EventHandler onUnityEvent;
     public bool shouldSpawn = false;
 
-    public NativeArray<Entity> entities;
-
     protected override void OnCreate()
     {
         RequireForUpdate<SpawnCubeConfig>();
+        spawnnedEntities = new DynamicBuffer<Entity>();
     }
 
     protected override void OnUpdate()
@@ -32,6 +31,18 @@ public partial class SpawnSystem : SystemBase
                 shouldSpawn = true;
             }
         }
+        else
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            var spawnCubeCon = SystemAPI.GetSingleton<SpawnCubeConfig>();
+
+            var buffer = new EntityCommandBuffer(WorldUpdateAllocator);
+            for (int i = 0; i < spawnCubeCon.spawnnedEntities.Capacity; i++)
+            {
+                buffer.DestroyEntity(spawnCubeCon.spawnnedEntities[i]);
+            }
+            buffer.Playback(EntityManager);
+        }
 
         if (shouldSpawn)
         {
@@ -42,7 +53,7 @@ public partial class SpawnSystem : SystemBase
             for (int i = 0; i < spawnCubeCon.amount; i++)
             {
                 var entity = buffer.Instantiate(spawnCubeCon.cubePrefab);
-                var pos = new float3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-20f, 50f), UnityEngine.Random.Range(-50f, 50f));
+                var pos = new float3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-2f, 5f), UnityEngine.Random.Range(-50f, 50f));
                 buffer.SetComponent(entity, new LocalTransform
                 {
                     Position = pos,
